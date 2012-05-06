@@ -20,6 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".UserListActivity"
+            >            
+        </activity>
     </application>
     <!-- Uygulamanin internete cikabilmesi icin kullanicidan interneti kullanma izni almamiz gerekiyor,
     	uygulama yuklenirken kullanici bunlara izin verdigini goruyor -->

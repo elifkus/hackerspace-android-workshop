@@ -3,6 +3,7 @@ package org.istanbulhs.workshop;
 import org.istanbulhs.util.HttpUtil;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -47,10 +48,39 @@ public class LoginActivity extends Activity implements OnClickListener {
             //Her Button aslinda bir view ayni zamanda. 
             //Button class'i View'u extend ediyor
             //Biz id'den dolayi bu gelen view'un bir buton oldugunu biliyoruz
-            Button button = (Button)v;
-            //Bu butonu tikladigimizda ustundeki yazi 'Ben kaydoldum oluyor'
             
-            button.setText("Ben kaydoldum!");
+            EditText usernameBox = (EditText)findViewById(R.id.kullaniciEditText);
+            //String'e ceviriyoruz ve trim ediyoruz. 
+            //Trim etmek demek etrafindaki whitespace karakterlerini silmek demek
+            //Bunlar url'de kalirsa hata aliriz
+            String username = usernameBox.getText().toString().trim();
+            
+            //yukardakinin aynisi email icin
+            EditText emailEditText = (EditText)findViewById(R.id.emailEditText);
+            String email = emailEditText.getText().toString().trim();
+            Log.i("hackerspace","email: " + email);
+            
+            //yukardakinin aynisi sifre icin
+            EditText passwordBox = (EditText)findViewById(R.id.sifreEditText);
+            String password = passwordBox.getText().toString().trim();
+            
+            //http://service.istanbulhs.org/user/register/elifkus/elifkus@gmail.com/aaaabbbb
+            String url = "http://service.istanbulhs.org/"+"user/register/" + username + "/" 
+                                                            + email + "/"+ password;
+
+            String responseString = null;
+            
+            //request'i at
+            try {
+                responseString = HttpUtil.getResponseStringForHttpRequest(url);
+            } catch (Exception e) {                
+                Log.e("hackerspace", e.toString());
+                Log.e("hackerspace", "mesaj", e);    
+            }
+            //Donen string'i butona set et
+            Button button = (Button)v;
+            button.setText(responseString);
+            
         } else if (v.getId() == R.id.loginButton) {
             
             Button button = (Button)v;
@@ -82,6 +112,17 @@ public class LoginActivity extends Activity implements OnClickListener {
             }
             //Donen string'i butona set et
             button.setText(responseString);
+            
+            //Bir sonraki aktiviteye username'i gondermek icin bir bundle olusturuyoruz
+            Bundle dataBundle = new Bundle();
+            dataBundle.putString("username", username);
+            
+            //Yeni aktivitenin baslatmak icin yeni bir intent yaratiyoruz.
+            //Bundle'imizi bu intent'e ekliyoruz
+            Intent newActivityIntent = new Intent(this, UserListActivity.class);
+            newActivityIntent.putExtras(dataBundle);
+            this.startActivity(newActivityIntent);
+            
         }
         
         
