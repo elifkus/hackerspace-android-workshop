@@ -95,8 +95,8 @@ public class UserListActivity extends ListActivity {
         for (int i=0; i<jsonList.length(); i++) {
             //Her objeden name'i alip listeye koyuyoruz
             JSONObject jsonObject = jsonList.getJSONObject(i);
-            //optString metodu ile okuyoruz, eger name yoksa objenin icinde 
-            //"???" stringini gonderecek
+            //optString metodu ile okuyoruz, eger name yoksa objenin icinde, 
+            //"???" stringini dondurecek
             String name = jsonObject.optString("name", "???");
             
             nameList.add(name);
