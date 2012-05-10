@@ -1,8 +1,12 @@
 package org.istanbulhs.workshop;
 
 import org.istanbulhs.util.HttpUtil;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -82,9 +86,7 @@ public class LoginActivity extends Activity implements OnClickListener {
             button.setText(responseString);
             
         } else if (v.getId() == R.id.loginButton) {
-            
-            Button button = (Button)v;
-            
+                        
             //kullanici adindaki edittext'te kullanici adinin ne girildigne bakiyoruz
             EditText usernameBox = (EditText)findViewById(R.id.kullaniciEditText);
             //String'e ceviriyoruz ve trim ediyoruz. 
@@ -110,21 +112,64 @@ public class LoginActivity extends Activity implements OnClickListener {
                 Log.e("hackerspace", e.toString());
                 Log.e("hackerspace", "mesaj", e);    
             }
-            //Donen string'i butona set et
-            button.setText(responseString);
             
-            //Bir sonraki aktiviteye username'i gondermek icin bir bundle olusturuyoruz
-            Bundle dataBundle = new Bundle();
-            dataBundle.putString("username", username);
+            //Donen request'ten id'yi parse etmeyi deneyecez
+            //Parse edebiliyorsak login basarili olmustur
+            //Basarili olamiyorsak hata donmustur
+            //Hata donduyse bir uyari penceresi gosterecegiz
+            Integer userId = null;
             
-            //Yeni aktivitenin baslatmak icin yeni bir intent yaratiyoruz.
-            //Bundle'imizi bu intent'e ekliyoruz
-            Intent newActivityIntent = new Intent(this, UserListActivity.class);
-            newActivityIntent.putExtras(dataBundle);
-            this.startActivity(newActivityIntent);
-            
+            try {
+                userId = this.parseIdFromString(responseString);
+            } catch (JSONException e) {
+                this.showAlertDialog(responseString);
+                
+                Log.e("hackerspace", e.toString());
+                Log.e("hackerspace", "mesaj", e);
+            }
+
+            //eger userId'yi parse edebildiysek null degildir o zaman bir sonraki sayfayi goster
+            if (userId != null) {
+                //Bir sonraki aktiviteye username'i gondermek icin bir bundle olusturuyoruz
+                Bundle dataBundle = new Bundle();
+                dataBundle.putString("username", username);
+                
+                //Yeni aktivitenin baslatmak icin yeni bir intent yaratiyoruz.
+                //Bundle'imizi bu intent'e ekliyoruz
+                Intent newActivityIntent = new Intent(this, UserListActivity.class);
+                newActivityIntent.putExtras(dataBundle);
+                this.startActivity(newActivityIntent);
+            }
         }
-        
-        
     }
+    
+    //Uyari ekranini gostermek icin yazdigimiz kod
+    //Android bu konuda bize pek yardimci olmamis, cok kod yazdiriyor
+    //Belki yeni android versiyonlarinda daha pratik yontemler vardir
+    private void showAlertDialog(String message){
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Uyarı");
+        alertDialog.setMessage(message);
+        
+        alertDialog.setButton("Tamam", new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int which) {
+               dialog.cancel();
+           }
+        });
+        
+        alertDialog.show();
+    }
+
+    //Gelen JSON objesinden id'yi okuyup Integer'a ceviren kod
+    private Integer parseIdFromString(String text) throws JSONException {        
+        JSONObject jsonObject = new JSONObject(text);
+        //Bize donen string
+        //{"id":"12"}
+        
+        String stringId = (String)jsonObject.get("id");
+        Log.e("hackerspace", "stringId is "+stringId);
+        
+        return Integer.parseInt(stringId);
+    }
+
 }

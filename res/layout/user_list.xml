@@ -7,8 +7,12 @@
   <TextView android:id="@+id/usernametext" 
       		android:layout_width="wrap_content"
       		android:layout_height="wrap_content" />
-  <LinearLayout android:layout_width="fill_parent"
+  <Button android:id="@+id/mapbutton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content" android:text="Harita" /> 
+     <LinearLayout android:layout_width="fill_parent"
     	android:layout_height="wrap_content">
+    	<!-- Kullanicilari listeledigimiz view -->
       <ListView android:id="@android:id/list"
           		android:layout_width="fill_parent"
           		android:layout_height="fill_parent"></ListView>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainlayout"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <!-- Haritanin goruntulendigi view -->
+    <com.google.android.maps.MapView
+        android:id="@+id/mapview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:clickable="true"
+        android:apiKey="0zZmttLdO3fZ2FWxJLoNaq9pxWlqCBrd2MoWnfQ"
+    />
+     <!-- Ustteki api key'i kendi api keyinizle degistirin -->
+        <!-- Debug api key'i almak icin yapilmasi gerekenler: 
+        http://stackoverflow.com/questions/5962193/how-can-i-get-debug-map-api-key -->
+        <!-- Burda biraz daha uzun ve aciklamali olani: 
+        https://developers.google.com/maps/documentation/android/mapkey#getdebugfingerprint -->
+</RelativeLayout>

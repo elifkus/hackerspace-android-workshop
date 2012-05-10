@@ -20,9 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserListActivity"
-            >            
+        <activity android:name=".UserListActivity">            
         </activity>
+        <activity android:name=".CustomMapActivity">            
+        </activity>
+        <!-- Google Maps API'yi kullanmak icin bunu eklememiz gerekiyor -->
+        <uses-library android:name="com.google.android.maps" />
     </application>
     <!-- Uygulamanin internete cikabilmesi icin kullanicidan interneti kullanma izni almamiz gerekiyor,
     	uygulama yuklenirken kullanici bunlara izin verdigini goruyor -->
